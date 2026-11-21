@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="WeatherX — a premium weather dashboard with real-time conditions, hourly and 7-day forecasts, and dynamic backgrounds.">
+  <meta name="theme-color" content="#0b2a5b">
+  <title>WeatherX · Modern Weather</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-weather="cloudy">
+  <div class="bg-layer" aria-hidden="true">
+    <div class="fx fx-rain"></div>
+    <div class="fx fx-snow"></div>
+    <div class="fx fx-stars"></div>
+    <div class="fx fx-flash"></div>
+  </div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 40 40"><circle cx="15" cy="15" r="7" fill="#ffd166"/><path d="M12 30h16a6 6 0 0 0 0-12 8 8 0 0 0-15.2 2A5 5 0 0 0 12 30z" fill="#eaf3ff"/></svg>
+      </span>
+      <span class="brand-name">WeatherX</span>
+    </div>
+
+    <form id="search-form" class="search" role="search" autocomplete="off">
+      <label for="search-input" class="visually-hidden">Search for a city</label>
+      <span class="search-icon" aria-hidden="true"></span>
+      <input
+        id="search-input"
+        type="text"
+        role="combobox"
+        aria-autocomplete="list"
+        aria-controls="suggestions"
+        aria-expanded="false"
+        placeholder="Search a city, e.g. Karachi, PK"
+        maxlength="80"
+        spellcheck="false">
+      <ul id="suggestions" class="suggestions" role="listbox" aria-label="City suggestions" hidden></ul>
+    </form>
+
+    <div class="actions">
+      <button id="btn-locate" class="btn" type="button" aria-label="Use my location" title="Use my location"></button>
+      <button id="btn-refresh" class="btn" type="button" aria-label="Refresh weather" title="Refresh weather"></button>
+      <div class="segmented" role="group" aria-label="Temperature unit">
+        <button type="button" data-unit="C" aria-pressed="true">°C</button>
+        <button type="button" data-unit="F" aria-pressed="false">°F</button>
+      </div>
+      <button id="btn-theme" class="btn" type="button" aria-label="Toggle theme"></button>
+      <button id="btn-menu" class="btn menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar" aria-label="Show favorites and recent cities"></button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar" class="sidebar" aria-label="Saved cities">
+      <section class="glass panel">
+        <h2>Favorites</h2>
+        <ul id="fav-list" class="chip-list"></ul>
+        <p id="fav-empty" class="muted small">Tap the star on any city to save it here.</p>
+      </section>
+      <section class="glass panel">
+        <div class="panel-head">
+          <h2>Recently searched</h2>
+          <button id="btn-clear-recent" class="text-btn" type="button" hidden>Clear</button>
+        </div>
+        <ul id="recent-list" class="chip-list"></ul>
+        <p id="recent-empty" class="muted small">Cities you search for will appear here.</p>
+      </section>
+    </aside>
+
+    <main id="main" class="content" tabindex="-1">
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+      <div id="error" class="error-banner" role="alert" hidden></div>
+
+      <section id="welcome" class="glass welcome" hidden>
+        <h1>Weather, beautifully clear.</h1>
+        <p class="muted">Search any city in the world, or allow location access to see conditions where you are.</p>
+        <div class="welcome-actions">
+          <button id="welcome-locate" class="btn-primary" type="button">Use my location</button>
+          <button id="welcome-search" class="btn-ghost" type="button">Search a city</button>
+        </div>
+      </section>
+
+      <div id="dashboard" hidden>
+        <section class="glass hero" aria-labelledby="city-name">
+          <div class="hero-main">
+            <div class="place">
+              <h1 id="city-name"></h1>
+              <button id="btn-fav" class="btn-fav" type="button" aria-pressed="false" aria-label="Add to favorites"></button>
+            </div>
+            <div class="country" id="country-name"></div>
+            <div class="datetime" id="local-datetime"></div>
+            <div class="temp-row">
+              <div id="hero-icon" class="hero-icon"></div>
+              <div class="temp-block">
+                <div id="temp" class="temp" aria-live="polite"></div>
+                <div id="condition" class="condition"></div>
+              </div>
+            </div>
+            <div class="minmax">
+              <span id="hi-lo"></span>
+              <span class="feels">Feels like <strong id="feels"></strong></span>
+            </div>
+          </div>
+          <div class="hero-side">
+            <button id="btn-share" class="btn-ghost" type="button">Share</button>
+          </div>
+        </section>
+
+        <section id="advisories-panel" class="glass panel" aria-labelledby="advisories-title" hidden>
+          <h2 id="advisories-title">Advisories</h2>
+          <ul id="advisories" class="advisory-list"></ul>
+          <p class="muted small">Derived from forecast values. These are not official government warnings.</p>
+        </section>
+
+        <section class="glass panel" aria-labelledby="hourly-title">
+          <h2 id="hourly-title">Next 24 hours</h2>
+          <div id="hourly" class="hourly" tabindex="0" aria-label="Hourly forecast, scroll horizontally"></div>
+        </section>
+
+        <section class="glass panel" aria-labelledby="daily-title">
+          <h2 id="daily-title">7-day forecast</h2>
+          <div id="daily" class="daily"></div>
+        </section>
+
+        <section class="panel-block" aria-labelledby="details-title">
+          <h2 id="details-title" class="section-title">Current details</h2>
+          <div id="details" class="details-grid"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="loader" class="loader" hidden role="status" aria-label="Loading weather">
+    <div class="spinner"></div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
