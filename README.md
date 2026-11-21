@@ -1,4 +1,4 @@
-# WeatherX
+skyline-weather
 
 A premium, responsive weather dashboard built with vanilla HTML, CSS and JavaScript (ES modules). Real-time conditions, a 24-hour forecast, a 7-day outlook and detailed atmospheric readings, all from the free [Open-Meteo](https://open-meteo.com) API. No frameworks, no build step, no API key.
 
